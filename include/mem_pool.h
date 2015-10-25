@@ -32,7 +32,11 @@ void* MP_alloc(MP_handle*);
 /*
  * Returning a chunk of memory back to pool.
  * Memory pointer will be set to NULL.
+ * return code:
+ *   0 - successful
+ *   1 - wrong memory address or out-of-range writing error
+ *       (only in debug mode when MP_DEBUG is defined)
  */
-void MP_free(MP_handle*, void*);
+int MP_free(MP_handle*, void*);
 
 #endif

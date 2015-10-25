@@ -1,4 +1,4 @@
-# c_mem_pool (v1.0.0)
+# c_mem_pool (v1.1.0)
 Fixed size memory pool implemented in C
 
 ## Interfaces
@@ -29,9 +29,13 @@ Finalization routine that free all memory.
 
 Return a chunk of memory from memory pool.
 
-### `void MP_free(MP_handle*, void*);`
+### `int MP_free(MP_handle*, void*);`
 
 Recycle the memory that allocated by `MP_alloc` back to memory pool.
+When `MP_DEBUG` is defined, the memory address is checked for its validity. If
+the memory does not belong to a memory pool or out-of-range writings corrupt the
+internal memory bookkeeping then this routine will return 1 and the memory is
+not recycled. Otherwise it returns 0.
 
 ### Notes
 
@@ -40,4 +44,6 @@ Recycle the memory that allocated by `MP_alloc` back to memory pool.
   otherwise memory leak is followed. However, memory pool will increase its pool
   size when memory pool is fully occupied, so calling `MP_free` to recycle
   unused memory can save actual memory allocation counts.
-* No memory address verification is perform in `MP_free`. (TODO)
+* Memory address verification in `MP_free` should have checked whether the
+  memory belongs to this memory pool or the other. So it still accept memory
+  from other memory pool. (TODO)
