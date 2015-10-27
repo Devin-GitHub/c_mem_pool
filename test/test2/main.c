@@ -95,8 +95,28 @@ int main()
         printf("Failure test3 passed.\n");
     else
         printf("Failure test3 failed.\n");
+
+    MP_handle *handle2 = MP_init(sizeof(Chunk), 10);
+    if (handle2 == NULL)
+    {
+        printf("Error: handle2 allocation failed.\n");
+        return 1;
+    }
+    chunk_array[3] = MP_alloc(handle2);
+    if (chunk_array[3] == NULL)
+    {
+        printf("Error: MP_alloc failed 5.\n");
+        MP_finalize(handle);
+        MP_finalize(handle2);
+    }
+    chunk_array[3]->a = chunk_array[3]->b = chunk_array[3]->c = 321;
+    if(MP_free(handle, chunk_array[3]) != 0)
+        printf("Failure test4 passed.\n");
+    else
+        printf("Failure test4 failed.\n");
     
     MP_finalize(handle);
+    MP_finalize(handle2);
 //    printf("b: %lf, c: %lf\n", chunk_array[4]->b, chunk_array[4]->c);
     return 0;
 }
